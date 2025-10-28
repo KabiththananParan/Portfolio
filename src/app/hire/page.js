@@ -4,36 +4,40 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import ThemeToggle from "@/components/ThemeToggle";
 import Navbar from "@/components/Navbar";
+// Only import the icon(s) that actually exist in this folder to avoid build errors.
+import reactIcon from './react.png';
+import nextJSIcon from './next_js.png';
+import tailwindIcon from './tailwind.png';
 
 export default function HirePage() {
   // Navbar scroll handling moved to shared <Navbar /> component
 
   const techStack = {
     frontend: [
-      { name: 'React', icon: '⚛️' },
-      { name: 'Next.js', icon: '▲' },
-      { name: 'TailwindCSS', icon: '🎨' },
-      { name: 'Framer Motion', icon: '🎬' },
-      { name: 'TypeScript', icon: '📘' },
-      { name: 'React Query', icon: '🔄' },
-      { name: 'React Native', icon: '📱' },
-      // { name: 'Expo', icon: '🚀' }
+      { name: 'React', icon: reactIcon },
+      { name: 'Next.js', icon: nextJSIcon },
+      { name: 'TailwindCSS', icon: tailwindIcon },
+      { name: 'Framer Motion', emoji: '🎬' },
+      { name: 'TypeScript', emoji: '📘' },
+      { name: 'React Query', emoji: '🔄' },
+      { name: 'React Native', emoji: '📱' },
+      // { name: 'Expo', icon: '/icons/expo.png' }
     ],
     backend: [
-      { name: 'Node.js', icon: '🟢' },
-      { name: 'Express', icon: '🚂' },
-      // { name: 'tRPC', icon: '🔌' }
+      { name: 'Node.js', emoji: '🟢' },
+      { name: 'Express', emoji: '🚂' },
+      // { name: 'tRPC', icon: '/icons/trpc.png' }
     ],
     databases: [
-      { name: 'MySQL', icon: '🐬' },
-      // { name: 'Redis', icon: '🔴' },
-      { name: 'PostgreSQL', icon: '🐘' },
-      { name: 'MongoDB', icon: '🍃' }
+      { name: 'MySQL', emoji: '🐬' },
+      // { name: 'Redis', icon: '/icons/redis.png' },
+      { name: 'PostgreSQL', emoji: '🐘' },
+      { name: 'MongoDB', emoji: '🍃' }
     ],
     devops: [
-      // { name: 'AWS', icon: '☁️' },
-      { name: 'Docker', icon: '🐳' },
-      { name: 'Git', icon: '📦' }
+      { name: 'AWS', emoji: '☁️' },
+      { name: 'Docker', emoji: '🐳' },
+      { name: 'Git', emoji: '📦' }
     ]
   };
 
@@ -87,8 +91,12 @@ export default function HirePage() {
               </div>
               <ul className="space-y-2.5">
                 {techStack.frontend.map((tech, index) => (
-                  <li key={index} className="flex items-center gap-2.5 text-zinc-400 hover:text-zinc-200 transition-colors">
-                    <span className="text-lg">{tech.icon}</span>
+                    <li key={index} className="flex items-center gap-2.5 text-zinc-400 hover:text-zinc-200 transition-colors">
+                      {tech.icon ? (
+                        <Image src={tech.icon} alt={tech.name} width={20} height={20} className="rounded-sm" />
+                      ) : (
+                        <span className="text-lg">{tech.emoji ?? '•'}</span>
+                      )}
                     <span className="text-sm">{tech.name}</span>
                   </li>
                 ))}
@@ -106,8 +114,12 @@ export default function HirePage() {
               </div>
               <ul className="space-y-2.5">
                 {techStack.backend.map((tech, index) => (
-                  <li key={index} className="flex items-center gap-2.5 text-zinc-400 hover:text-zinc-200 transition-colors">
-                    <span className="text-lg">{tech.icon}</span>
+                    <li key={index} className="flex items-center gap-2.5 text-zinc-400 hover:text-zinc-200 transition-colors">
+                      {tech.icon ? (
+                        <Image src={tech.icon} alt={tech.name} width={20} height={20} className="rounded-sm" />
+                      ) : (
+                        <span className="text-lg">{tech.emoji ?? '•'}</span>
+                      )}
                     <span className="text-sm">{tech.name}</span>
                   </li>
                 ))}
@@ -124,8 +136,12 @@ export default function HirePage() {
               </div>
               <ul className="space-y-2.5">
                 {techStack.databases.map((tech, index) => (
-                  <li key={index} className="flex items-center gap-2.5 text-zinc-400 hover:text-zinc-200 transition-colors">
-                    <span className="text-lg">{tech.icon}</span>
+                    <li key={index} className="flex items-center gap-2.5 text-zinc-400 hover:text-zinc-200 transition-colors">
+                      {tech.icon ? (
+                        <Image src={tech.icon} alt={tech.name} width={20} height={20} className="rounded-sm" />
+                      ) : (
+                        <span className="text-lg">{tech.emoji ?? '•'}</span>
+                      )}
                     <span className="text-sm">{tech.name}</span>
                   </li>
                 ))}
@@ -142,8 +158,12 @@ export default function HirePage() {
               </div>
               <ul className="space-y-2.5">
                 {techStack.devops.map((tech, index) => (
-                  <li key={index} className="flex items-center gap-2.5 text-zinc-400 hover:text-zinc-200 transition-colors">
-                    <span className="text-lg">{tech.icon}</span>
+                    <li key={index} className="flex items-center gap-2.5 text-zinc-400 hover:text-zinc-200 transition-colors">
+                      {tech.icon ? (
+                        <Image src={tech.icon} alt={tech.name} width={20} height={20} className="rounded-sm" />
+                      ) : (
+                        <span className="text-lg">{tech.emoji ?? '•'}</span>
+                      )}
                     <span className="text-sm">{tech.name}</span>
                   </li>
                 ))}
@@ -158,7 +178,7 @@ export default function HirePage() {
           
           <div className="space-y-6">
             <div className="flex gap-4">
-              <div className="flex-shrink-0 mt-1">
+              <div className="shrink-0 mt-1">
                 <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
@@ -170,7 +190,7 @@ export default function HirePage() {
             </div>
 
             <div className="flex gap-4">
-              <div className="flex-shrink-0 mt-1">
+              <div className="shrink-0 mt-1">
                 <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
@@ -182,7 +202,7 @@ export default function HirePage() {
             </div>
 
             <div className="flex gap-4">
-              <div className="flex-shrink-0 mt-1">
+              <div className="shrink-0 mt-1">
                 <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
@@ -203,7 +223,7 @@ export default function HirePage() {
             <div className="space-y-8">
               <div>
                 <div className="flex gap-3 mb-3">
-                  <div className="flex-shrink-0 mt-1">
+                  <div className="shrink-0 mt-1">
                     <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
@@ -219,7 +239,7 @@ export default function HirePage() {
 
               <div>
                 <div className="flex gap-3 mb-3">
-                  <div className="flex-shrink-0 mt-1">
+                  <div className="shrink-0 mt-1">
                     <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
@@ -237,7 +257,7 @@ export default function HirePage() {
             <div className="space-y-8">
               <div>
                 <div className="flex gap-3 mb-3">
-                  <div className="flex-shrink-0 mt-1">
+                  <div className="shrink-0 mt-1">
                     <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
@@ -252,7 +272,7 @@ export default function HirePage() {
 
               <div>
                 <div className="flex gap-3 mb-3">
-                  <div className="flex-shrink-0 mt-1">
+                  <div className="shrink-0 mt-1">
                     <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
