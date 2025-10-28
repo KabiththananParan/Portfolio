@@ -925,11 +925,25 @@ body {
   padding: 0 0.5rem;
 }
 
+/* Position the mobile avatar at the left of the mobile header and vertically center it */
 .mobile-header .mobile-avatar {
   position: absolute;
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
+}
+
+/* Desktop avatar - align with the centered pill nav (site-nav top: 28px) */
+.desktop-avatar {
+  position: fixed;
+  left: 1rem;
+  top: 28px; /* match .site-nav top */
+  z-index: 50;
+  display: block;
+}
+.desktop-avatar .avatar-small {
+  width: 48px;
+  height: 48px;
 }
 
 .nav-toggle {

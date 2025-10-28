@@ -86,21 +86,7 @@ export default function ProjectsPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white dotted-grid">
-      {/* Fixed avatar top-left */}
-      <div className="fixed top-4 left-4 z-50">
-        <a href="/" className="block">
-          <div className="avatar-small">
-            <Image
-              src="/Kabi.jpg"
-              alt="Avatar"
-              width={48}
-              height={48}
-              className="object-cover"
-              priority
-            />
-          </div>
-        </a>
-      </div>
+      {/* avatar handled by shared <Navbar /> on non-home pages */}
 
       <Navbar />
 

@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [isVisible, setIsVisible] = React.useState(true);
@@ -20,27 +21,38 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastY]);
 
+  const pathname = usePathname();
+
   return (
     <>
+      {/* Desktop avatar: fixed top-left, visible on sm+ */}
+      {pathname && pathname !== '/' && (
+        <a href="/" className="desktop-avatar hidden sm:block">
+          <div className="avatar-small">
+            <Image src="/Kabi.jpg" alt="Kabi" width={48} height={48} className="object-cover" />
+          </div>
+        </a>
+      )}
       {/* Desktop / tablet centered nav (hidden on small screens) */}
       <nav className={`site-nav ${isVisible ? "nav-visible" : "nav-hidden"} hidden sm:flex`}>
         <a href="/">Home</a>
         <a href="/about">About</a>
         <a href="/hire">Hire</a>
-        <a href="/blog">Blog</a>
+        {/* <a href="/blog">Blog</a> */}
         <a href="/projects">Projects</a>
         <a href="/uses">Uses</a>
       </nav>
 
-      {/* Mobile header: avatar left + hamburger right (visible on small screens) */}
+      {/* Mobile header: centered Menu pill (visible on small screens) */}
       <div className="mobile-header sm:hidden fixed top-4 left-0 right-0 z-50 flex items-center justify-center">
-        {/* Avatar on the left (absolutely positioned so the button can be centered) */}
-        <a href="/" className="mobile-avatar absolute left-4">
-          <div className="avatar-small">
-            <Image src="/Kabi.jpg" alt="Kabi" width={40} height={40} className="object-cover" />
-          </div>
-        </a>
-
+        {/* Avatar on the left (only show on non-root pages) */}
+        {pathname && pathname !== '/' && (
+          <a href="/" className="mobile-avatar absolute left-4">
+            <div className="avatar-small">
+              <Image src="/Kabi.jpg" alt="Kabi" width={40} height={40} className="object-cover" />
+            </div>
+          </a>
+        )}
         {/* Centered Menu pill */}
         <button
           aria-label="Toggle menu"
@@ -61,7 +73,7 @@ export default function Navbar() {
           <a href="/" onClick={() => setMobileOpen(false)}>Home</a>
           <a href="/about" onClick={() => setMobileOpen(false)}>About</a>
           <a href="/hire" onClick={() => setMobileOpen(false)}>Hire</a>
-          <a href="/blog" onClick={() => setMobileOpen(false)}>Blog</a>
+          {/* <a href="/blog" onClick={() => setMobileOpen(false)}>Blog</a> */}
           <a href="/projects" onClick={() => setMobileOpen(false)}>Projects</a>
           <a href="/uses" onClick={() => setMobileOpen(false)}>Uses</a>
         </div>
