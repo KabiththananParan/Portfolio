@@ -126,9 +126,9 @@ export default function ProjectsPage() {
         <a href="/projects">Projects</a>
         <a href="/uses">Uses</a>
       </nav>
-      
-      {/* Theme Toggle - separate from nav */}
-      <div className={`fixed right-8 transition-all duration-300 ${isNavVisible ? 'top-6' : 'top-[-60px]'}`}>
+
+      {/* Theme toggle top-right */}
+      <div className="fixed top-4 right-4 z-50">
         <ThemeToggle />
       </div>
 

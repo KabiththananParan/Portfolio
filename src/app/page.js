@@ -82,9 +82,9 @@ export default function Home() {
         <a href="/projects">Projects</a>
         <a href="/uses">Uses</a>
       </nav>
-      
-      {/* Theme Toggle - separate from nav */}
-      <div className={`fixed right-8 transition-all duration-300 ${isNavVisible ? 'top-6' : 'top-[-60px]'}`}>
+
+      {/* Theme toggle */}
+      <div className="fixed right-8 top-6 z-40">
         <ThemeToggle />
       </div>
 
