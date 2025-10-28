@@ -3,27 +3,10 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import ThemeToggle from "@/components/ThemeToggle";
+import Navbar from "@/components/Navbar";
 
 export default function HirePage() {
-  const [isNavVisible, setIsNavVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsNavVisible(false);
-      } else {
-        setIsNavVisible(true);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  // Navbar scroll handling moved to shared <Navbar /> component
 
   const techStack = {
     frontend: [
@@ -34,21 +17,21 @@ export default function HirePage() {
       { name: 'TypeScript', icon: '📘' },
       { name: 'React Query', icon: '🔄' },
       { name: 'React Native', icon: '📱' },
-      { name: 'Expo', icon: '🚀' }
+      // { name: 'Expo', icon: '🚀' }
     ],
     backend: [
       { name: 'Node.js', icon: '🟢' },
       { name: 'Express', icon: '🚂' },
-      { name: 'tRPC', icon: '🔌' }
+      // { name: 'tRPC', icon: '🔌' }
     ],
     databases: [
       { name: 'MySQL', icon: '🐬' },
-      { name: 'Redis', icon: '🔴' },
+      // { name: 'Redis', icon: '🔴' },
       { name: 'PostgreSQL', icon: '🐘' },
       { name: 'MongoDB', icon: '🍃' }
     ],
     devops: [
-      { name: 'AWS', icon: '☁️' },
+      // { name: 'AWS', icon: '☁️' },
       { name: 'Docker', icon: '🐳' },
       { name: 'Git', icon: '📦' }
     ]
@@ -72,15 +55,7 @@ export default function HirePage() {
         </a>
       </div>
 
-      {/* Top centered nav */}
-      <nav className={`site-nav ${isNavVisible ? 'nav-visible' : 'nav-hidden'}`}>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/hire">Hire</a>
-        <a href="/blog">Blog</a>
-        <a href="/projects">Projects</a>
-        <a href="/uses">Uses</a>
-      </nav>
+      <Navbar />
 
       {/* Theme toggle */}
       <div className="fixed right-8 top-6 z-40">

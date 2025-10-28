@@ -3,27 +3,12 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import ThemeToggle from "@/components/ThemeToggle";
+import Navbar from "@/components/Navbar";
 
 export default function UsesPage() {
-  const [isNavVisible, setIsNavVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsNavVisible(false);
-      } else {
-        setIsNavVisible(true);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  // Navbar behavior moved to shared component
 
   const tools = [
     {
@@ -106,15 +91,7 @@ export default function UsesPage() {
         </a>
       </div>
 
-      {/* Top centered nav */}
-      <nav className={`site-nav ${isNavVisible ? 'nav-visible' : 'nav-hidden'}`}>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/hire">Hire</a>
-        <a href="/blog">Blog</a>
-        <a href="/projects">Projects</a>
-        <a href="/uses">Uses</a>
-      </nav>
+      <Navbar />
 
       {/* Theme toggle top-right */}
       <div className="fixed top-4 right-4 z-50">

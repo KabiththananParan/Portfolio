@@ -3,30 +3,10 @@
 import React from "react";
 import Image from "next/image";
 import ThemeToggle from "@/components/ThemeToggle";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
-  const [isNavVisible, setIsNavVisible] = React.useState(true);
-  const [lastScrollY, setLastScrollY] = React.useState(0);
-
-  React.useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY < lastScrollY || currentScrollY < 10) {
-        // Scrolling up or at top
-        setIsNavVisible(true);
-      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        // Scrolling down
-        setIsNavVisible(false);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  // Navbar behavior is handled by the shared <Navbar /> component
 
   const projects = [
     { image: "/project1.jpg", alt: "Project 1" },
@@ -37,30 +17,30 @@ export default function Home() {
   ];
 
   const blogPosts = [
-    {
-      date: "December 5, 2023",
-      title: "XG Code Remote Development",
-      description: "Join the Code against a remote workspace on enterprise.",
-      category: "Digital Therapeutics"
-    },
-    {
-      date: "October 27, 2023",
-      title: "Understanding JavaScript Async/Await Behavior",
-      description: "A deep dive into how JavaScript handles asynchronous operations, from callbacks to async/await syntax.",
-      category: "JavaScript"
-    },
-    {
-      date: "March 18, 2024",
-      title: "Design UI: The Complete Guide",
-      description: "An implementation guide for managing state in React applications, by Evan Daniels hosted by Digital Therapeutics.",
-      category: "Digital Therapeutics"
-    },
-    {
-      date: "March 10, 2024",
-      title: "Mastering React State Management",
-      description: "A comprehensive guide for managing state in React applications, from useState to Redux and beyond.",
-      category: "React and Beyond"
-    }
+  //   {
+  //     date: "December 5, 2023",
+  //     title: "XG Code Remote Development",
+  //     description: "Join the Code against a remote workspace on enterprise.",
+  //     category: "Digital Therapeutics"
+  //   },
+  //   {
+  //     date: "October 27, 2023",
+  //     title: "Understanding JavaScript Async/Await Behavior",
+  //     description: "A deep dive into how JavaScript handles asynchronous operations, from callbacks to async/await syntax.",
+  //     category: "JavaScript"
+  //   },
+  //   {
+  //     date: "March 18, 2024",
+  //     title: "Design UI: The Complete Guide",
+  //     description: "An implementation guide for managing state in React applications, by Evan Daniels hosted by Digital Therapeutics.",
+  //     category: "Digital Therapeutics"
+  //   },
+  //   {
+  //     date: "March 10, 2024",
+  //     title: "Mastering React State Management",
+  //     description: "A comprehensive guide for managing state in React applications, from useState to Redux and beyond.",
+  //     category: "React and Beyond"
+  //   }
   ];
 
   const workItems = [
@@ -73,15 +53,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black text-zinc-50 dotted-grid">
-      {/* Top centered nav */}
-      <nav className={`site-nav ${isNavVisible ? 'nav-visible' : 'nav-hidden'}`}>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/hire">Hire</a>
-        <a href="/blog">Blog</a>
-        <a href="/projects">Projects</a>
-        <a href="/uses">Uses</a>
-      </nav>
+      <Navbar />
 
       {/* Theme toggle */}
       <div className="fixed right-8 top-6 z-40">

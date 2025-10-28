@@ -3,28 +3,10 @@
 import React from "react";
 import Image from "next/image";
 import ThemeToggle from "@/components/ThemeToggle";
+import Navbar from "@/components/Navbar";
 
 export default function About() {
-  const [isNavVisible, setIsNavVisible] = React.useState(true);
-  const [lastScrollY, setLastScrollY] = React.useState(0);
-
-  React.useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY < lastScrollY || currentScrollY < 10) {
-        setIsNavVisible(true);
-      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsNavVisible(false);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  // Navbar is provided by shared <Navbar /> component
 
   const socialLinks = [
     { name: "LinkedIn", icon: "linkedin", url: "#" },
@@ -38,15 +20,7 @@ export default function About() {
 
   return (
     <div className="min-h-screen bg-black text-zinc-50 dotted-grid">
-      {/* Top centered nav */}
-      <nav className={`site-nav ${isNavVisible ? 'nav-visible' : 'nav-hidden'}`}>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/hire">Hire</a>
-        <a href="/blog">Blog</a>
-        <a href="/projects">Projects</a>
-        <a href="/uses">Uses</a>
-      </nav>
+      <Navbar />
 
       {/* Theme toggle */}
       <div className="fixed right-8 top-6 z-40">
