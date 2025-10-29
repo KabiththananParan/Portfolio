@@ -46,13 +46,13 @@ export default function Navbar() {
       {/* Mobile header: centered Menu pill (visible on small screens) */}
       <div className="mobile-header sm:hidden fixed top-4 left-0 right-0 z-50 flex items-center justify-center">
         {/* Avatar on the left (only show on non-root pages) */}
-        {pathname && pathname !== '/' && (
+        {/* {pathname && pathname !== '/' && (
           <a href="/" className="mobile-avatar absolute left-4">
             <div className="avatar-small">
               <Image src="/Kabi.jpg" alt="Kabi" width={40} height={40} className="object-cover" />
             </div>
           </a>
-        )}
+        )} */}
         {/* Centered Menu pill */}
         <button
           aria-label="Toggle menu"
