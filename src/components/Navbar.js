@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { usePathname } from 'next/navigation';
+import ThemeToggle from './ThemeToggle';
 
 export default function Navbar() {
   const [isVisible, setIsVisible] = React.useState(true);
@@ -25,22 +26,32 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Desktop avatar: fixed top-left, visible on sm+ */}
-      {pathname && pathname !== '/' && (
-        <a href="/" className="desktop-avatar hidden sm:block">
-          <div className="avatar-small">
-            <Image src="/Kabi.jpg" alt="Kabi" width={48} height={48} className="object-cover" />
+      {/* Desktop / tablet nav (hidden on small screens) */}
+      <nav className={`site-nav ${isVisible ? "nav-visible" : "nav-hidden"} hidden sm:block`}>
+        <div className="max-w-7xl mx-auto w-full flex items-center justify-between px-6">
+          {/* Left: avatar + name */}
+          <div className="flex items-center gap-3">
+            <a href="/" className="flex items-center gap-3">
+              <div className="avatar-small">
+                <Image src="/Kabi.jpg" alt="Kabi" width={40} height={40} className="object-cover" />
+              </div>
+              <span className="font-semibold text-sm">Paran Kabiththanan</span>
+            </a>
           </div>
-        </a>
-      )}
-      {/* Desktop / tablet centered nav (hidden on small screens) */}
-      <nav className={`site-nav ${isVisible ? "nav-visible" : "nav-hidden"} hidden sm:flex`}>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/hire">Hire</a>
-        {/* <a href="/blog">Blog</a> */}
-        <a href="/projects">Projects</a>
-        <a href="/uses">Uses</a>
+
+          {/* Center: links (with small related icon) */}
+          <div className="flex gap-6 items-center">
+            <a href="/about" className="nav-link text-sm text-zinc-200 hover:text-zinc-100">About</a>
+            <a href="/projects" className="nav-link text-sm text-zinc-200 hover:text-zinc-100">Projects</a>
+            <a href="/hire" className="nav-link text-sm text-zinc-200 hover:text-zinc-100">Hire</a>
+            <a href="/uses" className="nav-link text-sm text-zinc-200 hover:text-zinc-100">Uses</a>
+          </div>
+
+          {/* Right: theme toggle */}
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+          </div>
+        </div>
       </nav>
 
       {/* Mobile header: centered Menu pill (visible on small screens) */}
