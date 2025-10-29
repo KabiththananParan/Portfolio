@@ -350,6 +350,15 @@ body {
   animation: fadeInUp 1s ease-out 0.2s both;
 }
 
+/* Ensure headings are readable in light mode: use solid foreground instead of white gradient */
+:root:not(.dark) .big-heading {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
+  color: var(--foreground) !important;
+}
+
 .social-row {
   animation: fadeInUp 1.2s ease-out 0.4s both;
 }
@@ -1149,4 +1158,112 @@ body {
     animation: none !important;
   }
 }
+
+/* Light-mode polish: reduce background intensity and ensure good contrast */
+:root:not(.dark) .dotted-grid::before {
+  /* Softer color blobs in light mode so the page doesn't wash out */
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.03) 0%, transparent 40%);
+  filter: none;
+  opacity: 0.9;
+}
+
+/* Light-mode grid: very subtle lines */
+:root:not(.dark) .dotted-grid::after {
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Remove heavy vignette in light mode (was darkening center too much) */
+:root:not(.dark) .dotted-grid::after {
+  /* keep the subtle grid but remove the dark vignette */
+  background: linear-gradient(rgba(59, 130, 246, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.9;
+}
+
+/* Tone down the spotlight / floating orbs in light mode */
+:root:not(.dark) .dotted-grid > main::before {
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%);
+  filter: blur(60px);
+}
+
+:root:not(.dark) .dotted-grid > main::after {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+  filter: blur(60px);
+}
+
+/* Make hero paragraphs more legible on light backgrounds */
+:root:not(.dark) .hero .content p {
+  color: rgba(23, 23, 23, 0.85);
+}
+:root:not(.dark) body {
+  color: #000; /* pure black for maximum contrast in light mode */
+}
+:root:not(.dark) .blog-post,
+:root:not(.dark) .tech-stack-card,
+:root:not(.dark) .project-detail-card {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* Slightly reduce overlay gradients used by social icons in light mode */
+:root:not(.dark) h1,
+:root:not(.dark) h2,
+:root:not(.dark) h3,
+:root:not(.dark) .big-heading {
+  color: #000 !important;
+  opacity: 1 !important;
+  font-weight: 900 !important; /* stronger heading weight */
+}
+:root:not(.dark) .site-nav {
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+/* Stronger default text color in light mode for higher contrast */
+:root:not(.dark) body {
+  color: #000; /* pure black for maximum contrast in light mode */
+}
+
+:root:not(.dark) .site-nav a,
+:root:not(.dark) .mobile-menu a,
+:root:not(.dark) .mobile-menu-btn,
+:root:not(.dark) .site-nav {
+  color: #000;
+  opacity: 1;
+}
+:root:not(.dark) .dotted-grid > main::before {
+  /* further soften the left orb */
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.06) 0%, transparent 70%);
+  filter: blur(80px);
+  opacity: 0.7;
+}
+
+:root:not(.dark) .dotted-grid > main::after {
+  /* further soften or hide the right orb to reduce washout */
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.04) 0%, transparent 70%);
+  filter: blur(80px);
+  opacity: 0.6;
+}
+
+/* Ensure link-like text (small captions) is darker too */
+:root:not(.dark) .hero .content p,
+:root:not(.dark) .blog-post .text-zinc-400,
+:root:not(.dark) .sidebar-card p,
+:root:not(.dark) .project-action-btn-secondary {
+  color: rgba(11,18,32,0.95);
+}
+
+/* Reduce semi-transparent dark overlays that can make text faint */
+:root:not(.dark) .blog-post,
+:root:not(.dark) .sidebar-card,
+:root:not(.dark) .project-detail-card {
+  background: rgba(255,255,255,0.97);
+}
+
+/* finished */
 
