@@ -261,9 +261,10 @@ export default function Home() {
                 type="button"
                 onClick={downloadResume}
                 aria-label="Download resume"
-                className="inline-block mt-4 text-sm text-zinc-400 hover:text-zinc-300"
+                className="resume-btn mt-4 w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-50 rounded-lg py-3 px-4 text-center font-medium flex items-center justify-center gap-2 shadow-sm"
               >
-                Download Resume →
+                <span>Download Resume</span>
+                <span aria-hidden="true">↓</span>
               </button>
             </div>
           </aside>

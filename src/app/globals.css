@@ -1079,3 +1079,74 @@ body {
 .mobile-menu::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 99px; }
 .mobile-menu::-webkit-scrollbar-track { background: transparent; }
 
+/* Resume button animations and interactions */
+.resume-btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform 220ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms ease, background 220ms ease;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.resume-btn:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45), 0 0 24px rgba(139,92,246,0.08);
+}
+
+.resume-btn:active {
+  transform: translateY(-2px) scale(0.995);
+}
+
+.resume-btn:focus {
+  outline: 3px solid rgba(139,92,246,0.18);
+  outline-offset: 3px;
+}
+
+/* Sheen effect */
+.resume-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.04) 100%);
+  transform: skewX(-18deg);
+  filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.resume-btn:hover::after {
+  animation: sheen 900ms ease-in-out 1;
+  opacity: 1;
+}
+
+@keyframes sheen {
+  from { left: -40%; opacity: 0; }
+  20% { opacity: 0.6; }
+  to { left: 140%; opacity: 0; }
+}
+
+/* Micro-bounce to draw attention when the button first appears */
+.resume-btn.bounce-once {
+  animation: microBounce 900ms cubic-bezier(.2,.9,.3,1) both;
+}
+
+@keyframes microBounce {
+  0% { transform: translateY(0); }
+  20% { transform: translateY(-6px); }
+  40% { transform: translateY(0); }
+  60% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .resume-btn,
+  .resume-btn::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
