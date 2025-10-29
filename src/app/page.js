@@ -8,6 +8,35 @@ import Navbar from "@/components/Navbar";
 export default function Home() {
   // Navbar behavior is handled by the shared <Navbar /> component
 
+  // Function to download resume via the server API route (/api/resume)
+  // This fetches the PDF and triggers a programmatic download so the file
+  // is saved instead of opening inline in a new tab.
+  async function downloadResume() {
+    try {
+      const resp = await fetch('/api/resume');
+      if (!resp.ok) throw new Error('Failed to fetch resume');
+
+      const blob = await resp.blob();
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      // The server suggests a filename, but we set a friendly default too
+      a.download = 'Paran_Kabiththanan_Resume.pdf';
+      // Append to DOM, click, and remove to trigger download
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      // Release the object URL after a short delay to ensure the download starts
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (err) {
+      console.error('Resume download failed', err);
+      // As a fallback, open the API route in a new tab so users can still access it
+      window.open('/api/resume', '_blank', 'noopener');
+    }
+  }
+
   const projects = [
     { image: "/project1.jpg", alt: "Project 1" },
     { image: "/project2.jpg", alt: "Project 2" },
@@ -226,9 +255,16 @@ export default function Home() {
                   </div>
                 ))}
               </div> */}
-              <a href="#" className="inline-block mt-4 text-sm text-zinc-400 hover:text-zinc-300">
+              {/* Use a direct anchor with `download` as the simplest, most-compatible approach.
+                  Encode spaces in the filename so the URL is valid. */}
+              <button
+                type="button"
+                onClick={downloadResume}
+                aria-label="Download resume"
+                className="inline-block mt-4 text-sm text-zinc-400 hover:text-zinc-300"
+              >
                 Download Resume →
-              </a>
+              </button>
             </div>
           </aside>
         </div>
