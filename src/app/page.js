@@ -110,8 +110,8 @@ export default function Home() {
 
             <div className="content">
               <h1 className="big-heading text-zinc-50 mb-6">
-                Software Engineer, Freelancer,
-                <br /> and Open Source Enthusiast.
+                Software Engineer, Data Science 
+                <br /> & AI enthusiast.
               </h1>
 
               <div className="space-y-4 text-base">
