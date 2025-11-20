@@ -140,14 +140,14 @@ export default function About() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-24 pt-12 border-t border-zinc-800 text-center text-zinc-500">
-        <nav className="flex flex-wrap justify-center gap-8 mb-6 text-sm">
-          <a href="/about" className="hover:text-white transition">About</a>
-          <a href="/projects" className="hover:text-white transition">Projects</a>
-          <a href="/hire" className="text-cyan-400 font-semibold">Hire Me</a>
-          <a href="/uses" className="hover:text-white transition">Uses</a>
+      <footer className="relative z-10 mt-32 pt-12 border-t border-zinc-800 text-center">
+        <nav className="flex flex-wrap justify-center gap-8 mb-8 text-lg font-medium">
+          <a href="/about" className="text-cyan-400 font-bold">About</a>
+          <a href="/projects" className="hover:text-cyan-400 transition">Projects</a>
+          <a href="/hire" className="hover:text-purple-400 transition">Hire Me</a>
+          <a href="/uses" className="hover:text-pink-400 transition">Uses</a>
         </nav>
-        <p className="text-sm">© {new Date().getFullYear()} Kabiththanan Paran. Made with curiosity and caffeine.</p>
+        <p className="text-zinc-500 text-sm">© {new Date().getFullYear()} Paran Kabiththanan. Built with curiosity, caffeine, and a lot of code.</p>
       </footer>
 
       {/* Global styles moved to `globals.css` to keep this page a Server Component. */}
