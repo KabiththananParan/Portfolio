@@ -147,16 +147,14 @@ export default function UsesPage() {
         </div>
 
         {/* Footer */}
-        <footer className="mt-8 pt-8 border-t border-zinc-800">
-          <div className="flex flex-wrap justify-between items-center gap-4 text-sm text-zinc-500">
-            <nav className="flex gap-6">
-              <a href="/about" className="hover:text-zinc-300">About</a>
-              <a href="/projects" className="hover:text-zinc-300">Projects</a>
-              <a href="/hire" className="hover:text-zinc-300">Hire Me</a>
-              <a href="/uses" className="hover:text-zinc-300">Uses</a>
-            </nav>
-            <p>© 2025 present | Kabi Maharry</p>
-          </div>
+        <footer className="mt-24 pt-12 border-t border-zinc-800 text-center text-zinc-500">
+          <nav className="flex flex-wrap justify-center gap-8 mb-6 text-sm">
+            <a href="/about" className="hover:text-white transition">About</a>
+            <a href="/projects" className="hover:text-white transition">Projects</a>
+            <a href="/hire" className="text-cyan-400 font-semibold">Hire Me</a>
+            <a href="/uses" className="hover:text-white transition">Uses</a>
+          </nav>
+          <p className="text-sm">© 2025 Kabiththanan Paran. Made with curiosity and caffeine.</p>
         </footer>
       </main>
     </div>

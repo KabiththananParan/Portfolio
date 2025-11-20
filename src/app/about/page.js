@@ -109,18 +109,14 @@ export default function About() {
 
       </main>
 
-      <footer className="border-t border-zinc-800 mt-12">
-        <div className="container mx-auto px-6 max-w-6xl">
-          <div className="flex items-center justify-between py-6 text-sm text-zinc-400">
-            <nav className="flex gap-6">
-              <a href="/about" className="hover:text-white">About</a>
-              <a href="/projects" className="hover:text-white">Projects</a>
-              <a href="/hire" className="hover:text-white">Hire Me</a>
-              <a href="/uses" className="hover:text-white">Uses</a>
-            </nav>
-            <div>© {new Date().getFullYear()}–present | Paran Kabiththanan</div>
-          </div>
-        </div>
+      <footer className="mt-24 pt-12 border-t border-zinc-800 text-center text-zinc-500">
+        <nav className="flex flex-wrap justify-center gap-8 mb-6 text-sm">
+          <a href="/about" className="hover:text-white transition">About</a>
+          <a href="/projects" className="hover:text-white transition">Projects</a>
+          <a href="/hire" className="text-cyan-400 font-semibold">Hire Me</a>
+          <a href="/uses" className="hover:text-white transition">Uses</a>
+        </nav>
+        <p className="text-sm">© 2025 Kabiththanan Paran. Made with curiosity and caffeine.</p>
       </footer>
     </div>
   );
