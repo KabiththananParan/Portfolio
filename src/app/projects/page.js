@@ -283,7 +283,7 @@ export default function ProjectsPage() {
             <a href="/hire" className="text-cyan-400 font-semibold">Hire Me</a>
             <a href="/uses" className="hover:text-white transition">Uses</a>
           </nav>
-          <p className="text-sm">© 2025 Kabiththanan Paran. Made with curiosity and caffeine.</p>
+          <p className="text-sm">© {new Date().getFullYear()} Kabiththanan Paran. Made with curiosity and caffeine.</p>
         </footer>
 
       </main>
