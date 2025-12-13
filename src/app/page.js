@@ -73,11 +73,12 @@ export default function Home() {
   ];
 
   const workItems = [
-    { title: "Compassionate Refugee JAF set", date: "Oct 2024—Oct Now" },
-    { title: "TwitchSubeddie", date: "Jul 2024—Sep Now" },
-    { title: "HashSchedule", date: "Jul 2024—Oct Now" },
-    { title: "GitHub Gamers of Code", date: "Jun 2024—Jul 2024" },
-    { title: "True Date Late Gamers Of Code", date: "Feb 2023—May 2024" }
+    { 
+      title: "ML Intern at HABB", 
+      date: "Aug 2024—Present",
+      image: "/Work/Habb.jpg",
+      alt: "HABB company logo"
+    },
   ];
 
   return (
@@ -217,7 +218,7 @@ export default function Home() {
           {/* Sidebar */}
           <aside className="space-y-8">
             {/* Newsletter */}
-            <div className="sidebar-card">
+            {/* <div className="sidebar-card">
               <h3 className="text-lg font-bold mb-2">Stay up to date</h3>
               <p className="text-zinc-400 text-sm mb-4">
                 Get notified when I publish something new, and unsubscribe at any time.
@@ -232,7 +233,7 @@ export default function Home() {
                   Join
                 </button>
               </form>
-            </div>
+            </div> */}
 
             {/* Work */}
             <div className="sidebar-card">
@@ -242,10 +243,20 @@ export default function Home() {
                 </svg>
                 Work
               </h3>
-              {/* <div className="space-y-3">
+              <div className="space-y-3">
                 {workItems.map((item, index) => (
                   <div key={index} className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-zinc-800 rounded flex-shrink-0"></div>
+                    <div className="w-8 h-8 bg-zinc-800 rounded flex-shrink-0 overflow-hidden relative">
+                      {item.image && (
+                        <Image
+                          src={item.image}
+                          alt={item.alt || item.title}
+                          fill
+                          sizes="32px"
+                          className="object-cover"
+                        />
+                      )}
+                    </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-zinc-200 truncate">
                         {item.title}
@@ -254,7 +265,7 @@ export default function Home() {
                     </div>
                   </div>
                 ))}
-              </div> */}
+              </div>
               {/* Use a direct anchor with `download` as the simplest, most-compatible approach.
                   Encode spaces in the filename so the URL is valid. */}
               <button

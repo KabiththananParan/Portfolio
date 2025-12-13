@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 
 export default function ExperienceTimeline() {
   const [tab, setTab] = useState("education");
@@ -30,6 +31,8 @@ export default function ExperienceTimeline() {
       title: "ML Intern — HABB",
       desc: "Built data pipelines and trained prototype models for classification tasks; contributed to model evaluation and deployment scripts.",
       colorKey: "primary",
+      companyImg: "/Work/Habb.jpg",
+      companyAlt: "HABB company logo",
     },
     // {
     //   id: 2,
@@ -122,6 +125,22 @@ export default function ExperienceTimeline() {
                         <h3 className="font-semibold text-white mt-2">{it.title}</h3>
                         {/* Description: Light gray */}
                         <p className="text-gray-300 mt-3">{it.desc}</p>
+
+                        {/* Company Image for experience items */}
+                        {tab === "experience" && it.companyImg && (
+                          <div className="mt-4">
+                            <div className="relative w-28 h-28 overflow-hidden rounded-xl border border-gray-700">
+                              <Image
+                                src={it.companyImg}
+                                alt={it.companyAlt || it.title}
+                                fill
+                                sizes="112px"
+                                className="object-cover"
+                                priority={false}
+                              />
+                            </div>
+                          </div>
+                        )}
 
                         {/* Additional Content (if any) */}
                         {tab === "education" && (
