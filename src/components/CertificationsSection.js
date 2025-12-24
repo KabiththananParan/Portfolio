@@ -12,7 +12,30 @@ export default function CertificationsSection() {
       image: "EMC-certificate.png",
       desc: "Completed 3-months Full Stack MERN Development Bootcamp.",
     },
-    
+    {
+      id: "Programming",
+      title: "Introduction to Programming",
+      issuer: "Kaggle",
+      year: "2024",
+      image: "Kabiththanan - Intro to Programming.png",
+      desc: "Succesfully completed Introduction to Programming",
+    },
+    {
+      id: "Python",
+      title: "Python",
+      issuer: "Kaggle",
+      year: "2024",
+      image: "Kabiththanan - Python.png",
+      desc: "Succesfully completed Python",
+    },
+    {
+      id: "Web-Dev",
+      title: "Complete Intro to Web Development",
+      issuer: "FrontendMasters",
+      year: "2025",
+      image: "Complete Intro to Web Development.png",
+      desc: "Succesfully complete Intro to Web Development V3",
+    },
   ];
 
   // When there is only one cert, avoid duplicating it for the marquee — duplication is only
