@@ -22,9 +22,19 @@ export default function CTAActions() {
   };
 
   return (
-    <div className="mt-6 flex gap-4">
-      <button onClick={downloadResume} className="px-5 py-2 rounded-lg bg-linear-to-r from-cyan-400 via-purple-500 to-pink-500 text-black font-semibold hover:scale-105 transition-transform focus:outline-none focus:ring-4 focus:ring-cyan-400/30">Download CV</button>
-      <a href="mailto:kabiththananparan@gmail.com" className="px-5 py-2 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-200 font-medium hover:bg-zinc-800">Contact Me</a>
+    <div className="mt-8 flex flex-col sm:flex-row gap-6">
+      <button 
+        onClick={downloadResume} 
+        className="px-8 py-4 uppercase font-black tracking-widest text-sm bg-[var(--foreground)] text-[var(--background)] hover:bg-[var(--accent)] hover:text-[var(--foreground)] transition-colors border border-transparent"
+      >
+        Download CV
+      </button>
+      <a 
+        href="mailto:kabiththananparan@gmail.com" 
+        className="px-8 py-4 uppercase font-black tracking-widest text-sm border border-[var(--border-color)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors text-center"
+      >
+        Contact Me
+      </a>
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import ThemeToggle from "@/components/ThemeToggle";
+
 import Navbar from "@/components/Navbar";
 
 export default function UsesPage() {
@@ -107,7 +107,7 @@ export default function UsesPage() {
 
       {/* Theme toggle top-right */}
       <div className="fixed top-4 right-4 z-50">
-        <ThemeToggle />
+
       </div>
 
       {/* Main Content */}
