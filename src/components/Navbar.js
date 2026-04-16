@@ -2,7 +2,6 @@
 
 import React from "react";
 import Image from "next/image";
-import { usePathname } from 'next/navigation';
 import ThemeToggle from './ThemeToggle';
 
 export default function Navbar() {
@@ -22,8 +21,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastY]);
 
-  const pathname = usePathname();
-
   return (
     <>
       {/* Desktop / tablet nav (hidden on small screens) */}
@@ -42,7 +39,6 @@ export default function Navbar() {
           {/* Center: links (with small related icon) */}
           <div className="flex gap-6 items-center">
             <a href="/about" className="nav-link text-sm text-zinc-200 hover:text-zinc-100">About</a>
-            <a href="/blog" className="nav-link text-sm text-zinc-200 hover:text-zinc-100">Blog</a>
             <a href="/projects" className="nav-link text-sm text-zinc-200 hover:text-zinc-100">Projects</a>
             <a href="/hire" className="nav-link text-sm text-zinc-200 hover:text-zinc-100">Hire</a>
             <a href="/uses" className="nav-link text-sm text-zinc-200 hover:text-zinc-100">Uses</a>
@@ -84,7 +80,6 @@ export default function Navbar() {
         <div className="mobile-menu sm:hidden fixed top-16 z-40 rounded-lg p-3 bg-zinc-900/90 backdrop-blur border border-zinc-700 flex flex-col gap-2">
           <a href="/" onClick={() => setMobileOpen(false)}>Home</a>
           <a href="/about" onClick={() => setMobileOpen(false)}>About</a>
-          <a href="/blog" onClick={() => setMobileOpen(false)}>Blog</a>
           <a href="/hire" onClick={() => setMobileOpen(false)}>Hire</a>
           <a href="/projects" onClick={() => setMobileOpen(false)}>Projects</a>
           <a href="/uses" onClick={() => setMobileOpen(false)}>Uses</a>

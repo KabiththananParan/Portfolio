@@ -8,9 +8,15 @@ import Navbar from "@/components/Navbar";
 export default function Home() {
   // Navbar behavior is handled by the shared <Navbar /> component
 
-  const [blogPosts, setBlogPosts] = React.useState([]);
-  const [blogsLoading, setBlogsLoading] = React.useState(true);
-  const [blogsError, setBlogsError] = React.useState(null);
+  const linkedInPosts = [
+    {
+      title: "Latest LinkedIn Updates",
+      date: "Follow my recent activity",
+      description:
+        "I share updates about projects, AI/Data Science work, and career milestones on LinkedIn.",
+      url: "https://www.linkedin.com/in/kabiththananparan/recent-activity/all/",
+    },
+  ];
 
   // Function to download resume via the server API route (/api/resume)
   // This fetches the PDF and triggers a programmatic download so the file
@@ -40,139 +46,6 @@ export default function Home() {
       window.open('/api/resume', '_blank', 'noopener');
     }
   }
-
-  React.useEffect(() => {
-    const controller = new AbortController();
-    const headers = {
-      Accept: "application/vnd.github+json",
-      "User-Agent": "portfolio-site",
-    };
-
-    const formatTitle = (path) => {
-      const segments = path.split("/");
-      const fileName = segments.pop() || "";
-      const parent = segments.pop() || "";
-      const readable = fileName
-        .replace(/\.md$/i, "")
-        .replace(/[_-]+/g, " ")
-        .trim();
-      const parentLabel = parent ? ` — ${parent.replace(/[_-]+/g, " ")}` : "";
-      return `${readable}${parentLabel}`;
-    };
-
-    const decodeSnippet = (base64Content) => {
-      try {
-        const text = atob(base64Content || "");
-        const lines = text.split("\n");
-
-        const cleanLine = (line) => {
-          const stripped = line
-            .replace(/^\s*#+\s*/, "")
-            .replace(/^\s*[-*>]\s*/, "")
-            .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
-            .replace(/\[[^\]]*\]\([^)]*\)/g, "")
-            .replace(/`+/g, "")
-            .trim();
-          return stripped;
-        };
-
-        const candidate = lines.find((line) => {
-          const cleaned = cleanLine(line);
-          return cleaned.length > 0;
-        });
-
-        const summary = candidate ? cleanLine(candidate) : "";
-        return summary ? summary.slice(0, 180) : "";
-      } catch (err) {
-        console.error("Failed to decode blog content", err);
-        return "";
-      }
-    };
-
-    const fetchPosts = async () => {
-      try {
-        const treeResp = await fetch(
-          "https://api.github.com/repos/KabiththananParan/AI-ML-DS-DL-Blog/git/trees/main?recursive=1",
-          { headers, signal: controller.signal }
-        );
-
-        if (!treeResp.ok) {
-          throw new Error(`GitHub tree fetch failed: ${treeResp.status}`);
-        }
-
-        const treeData = await treeResp.json();
-        const markdownFiles = (treeData.tree || []).filter(
-          (node) =>
-            node.type === "blob" &&
-            node.path.toLowerCase().endsWith(".md") &&
-            node.path.toLowerCase() !== "readme.md"
-        );
-
-        const limitedFiles = markdownFiles.slice(0, 6);
-
-        const posts = await Promise.all(
-          limitedFiles.map(async (file) => {
-            const commitResp = await fetch(
-              `https://api.github.com/repos/KabiththananParan/AI-ML-DS-DL-Blog/commits?path=${encodeURIComponent(
-                file.path
-              )}&page=1&per_page=1`,
-              { headers, signal: controller.signal }
-            ).catch((err) => {
-              console.error("Commit fetch failed", err);
-              return null;
-            });
-
-            let commitDate = "";
-            if (commitResp && commitResp.ok) {
-              const commits = await commitResp.json();
-              commitDate = commits?.[0]?.commit?.author?.date || "";
-            }
-
-            const contentResp = await fetch(
-              `https://api.github.com/repos/KabiththananParan/AI-ML-DS-DL-Blog/contents/${file.path}?ref=main`,
-              { headers, signal: controller.signal }
-            ).catch((err) => {
-              console.error("Content fetch failed", err);
-              return null;
-            });
-
-            let description = "";
-            if (contentResp && contentResp.ok) {
-              const content = await contentResp.json();
-              description = decodeSnippet(content.content);
-            }
-
-            return {
-              title: formatTitle(file.path),
-              date: commitDate,
-              description,
-              url: `https://kabiththananparan.github.io/AI-ML-DS-DL-Blog/${file.path.replace(/\.md$/i, '.html')}`,
-            };
-          })
-        );
-
-        const sorted = posts.sort((a, b) => {
-          const aTime = a.date ? new Date(a.date).getTime() : 0;
-          const bTime = b.date ? new Date(b.date).getTime() : 0;
-          return bTime - aTime;
-        });
-
-        setBlogPosts(sorted);
-      } catch (err) {
-        if (!controller.signal.aborted) {
-          console.error("Blog load failed", err);
-          setBlogsError("Unable to load blog posts right now. Please try again later.");
-        }
-      } finally {
-        if (!controller.signal.aborted) {
-          setBlogsLoading(false);
-        }
-      }
-    };
-
-    fetchPosts();
-    return () => controller.abort();
-  }, []);
 
   const workItems = [
     { 
@@ -280,50 +153,18 @@ export default function Home() {
 
         
 
-        {/* Blog and Sidebar Layout */}
+        {/* LinkedIn and Sidebar Layout */}
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Blog Posts */}
+          {/* LinkedIn Posts */}
           <div className="lg:col-span-2 space-y-8">
-            {blogsLoading && (
-              <div className="space-y-4">
-                {[...Array(3)].map((_, idx) => (
-                  <div key={idx} className="animate-pulse rounded-lg border border-zinc-800 p-4">
-                    <div className="h-3 w-24 bg-zinc-800 rounded mb-2" />
-                    <div className="h-5 w-3/4 bg-zinc-800 rounded mb-2" />
-                    <div className="h-4 w-full bg-zinc-900 rounded" />
-                  </div>
-                ))}
-              </div>
+            {linkedInPosts.length === 0 && (
+              <p className="text-zinc-400">No LinkedIn posts added yet.</p>
             )}
 
-            {!blogsLoading && blogsError && (
-              <div className="blog-post">
-                <p className="text-zinc-300">{blogsError}</p>
-                <a
-                  className="text-emerald-400 text-sm hover:text-emerald-300"
-                  href="https://github.com/KabiththananParan/AI-ML-DS-DL-Blog"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Open blog repository →
-                </a>
-              </div>
-            )}
-
-            {!blogsLoading && !blogsError && blogPosts.length === 0 && (
-              <p className="text-zinc-400">No blog posts found yet. Check back soon!</p>
-            )}
-
-            {!blogsLoading && !blogsError && blogPosts.map((post, index) => (
+            {linkedInPosts.map((post, index) => (
               <article key={index} className="blog-post">
                 <time className="text-zinc-500 text-sm">
-                  {post.date
-                    ? new Date(post.date).toLocaleDateString(undefined, {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })
-                    : "Recently updated"}
+                  {post.date || "Recently posted"}
                 </time>
                 <h2 className="text-xl font-bold text-zinc-50 mt-2 mb-3">
                   {post.title}
@@ -339,7 +180,7 @@ export default function Home() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Read article →
+                  View LinkedIn post →
                 </a>
               </article>
             ))}

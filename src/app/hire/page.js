@@ -39,14 +39,8 @@ export default function HirePage() {
   };
 
   return (
-    // Base: Deep black background, White text
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Dotted Grid Background - Monochromatic */}
-      <div className="fixed inset-0 opacity-10 pointer-events-none" 
-           style={{
-             backgroundImage: `radial-gradient(circle at 1px, rgba(255, 255, 255, 0.2) 1px, transparent 0)`,
-             backgroundSize: '50px 50px'
-           }} />
+    // Base: Shared home-style background and page layout
+    <div className="min-h-screen bg-black text-white relative overflow-hidden dotted-grid">
 
       <Navbar />
 

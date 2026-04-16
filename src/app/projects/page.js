@@ -1,10 +1,50 @@
 "use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
+import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from "@/components/ThemeToggle";
 import Navbar from "@/components/Navbar";
+
+const GITHUB_USER = 'KabiththananParan';
+const MAX_PROJECTS = 18;
+
+function normalizeHomepage(url) {
+  if (!url) return null;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  return `https://${url}`;
+}
+
+function formatProjectTitle(name) {
+  if (!name) return 'Untitled Project';
+  return name
+    .replace(/[-_]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function ProjectPreview({ image, title }) {
+  const [imageFailed, setImageFailed] = useState(false);
+
+  if (!image || imageFailed) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-zinc-800 to-zinc-900">
+        <svg className="w-12 h-12 text-zinc-700 group-hover:text-zinc-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={image}
+      alt={`${title} preview`}
+      className="w-full h-full object-cover"
+      loading="lazy"
+      onError={() => setImageFailed(true)}
+    />
+  );
+}
 
 // --- Animation Variants ---
 const containerVariants = {
@@ -33,90 +73,79 @@ const cardVariants = {
 
 export default function ProjectsPage() {
   const [filter, setFilter] = useState('All');
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const projects = [
-    {
-      title: 'Studio Management System',
-      description: 'A comprehensive studio management platform built with JavaScript. Features include booking management, client tracking, schedule coordination, and payment processing.',
-      image: '/projects/studio.jpg',
-      tags: ['JavaScript', 'Node.js', 'MongoDB', 'Express'],
-      github: 'https://github.com/KabiththananParan/Studio-Management-System',
-      demo: '#'
-    },
-    {
-      title: 'e-Heal',
-      description: 'A comprehensive e-channeling healthcare platform developed as a Year 2 university project. Enables patients to book appointments, manage medical records, and connect with healthcare providers.',
-      image: '/projects/eheal.jpg',
-      tags: ['Java', 'JavaFX', 'MySQL', 'Healthcare'],
-      github: 'https://github.com/KabiththananParan/e-Heal',
-      demo: '#'
-    },
-    {
-      title: 'Simple CRUD App',
-      description: 'A full-stack CRUD application showcasing MERN stack capabilities. Implements create, read, update, and delete operations with a clean and intuitive user interface.',
-      image: '/projects/crud.jpg',
-      tags: ['React', 'Node.js', 'MongoDB', 'Express'],
-      github: 'https://github.com/KabiththananParan/Simple-CRUD-App',
-      demo: '#'
-    },
-    {
-      title: 'Data Science Projects',
-      description: 'A collection of data science and machine learning projects demonstrating various techniques and algorithms. Includes data analysis, visualization, and predictive modeling.',
-      image: '/projects/datascience.jpg',
-      tags: ['Python', 'Machine Learning', 'Data Analysis', 'Jupyter'],
-      github: 'https://github.com/KabiththananParan/Data-Science-Projects',
-      demo: '#'
-    },
-    {
-      title: 'EMC - Error Makes Clever',
-      description: 'A comprehensive collection of MERN stack course projects showcasing modern web development practices. Features responsive designs and interactive UI components.',
-      image: '/projects/emc.jpg',
-      tags: ['React', 'HTML5', 'CSS3', 'TailwindCSS'],
-      github: 'https://github.com/KabiththananParan/EMC',
-      demo: '#'
-    },
-    {
-      title: 'Automated Parking System',
-      description: 'An intelligent parking management system that automates vehicle entry, exit, and payment processing. Features real-time slot availability and automated barrier control.',
-      image: '/projects/parking.jpg',
-      tags: ['HTML', 'CSS', 'JavaScript', 'IoT'],
-      github: 'https://github.com/KabiththananParan/Automated-Parking-System',
-      demo: '#'
-    },
-    {
-      title: 'The Odin Project Portfolio',
-      description: 'A collection of web development projects completed as part of The Odin Project curriculum. Demonstrates progressive skill development in HTML, CSS, and JavaScript.',
-      image: '/projects/odin.jpg',
-      tags: ['HTML', 'CSS', 'JavaScript', 'Web Dev'],
-      github: 'https://github.com/KabiththananParan/The-Odin-Project',
-      demo: '#'
-    },
-    {
-      title: 'n8n Workflow Automation',
-      description: 'Fair-code workflow automation platform with native AI capabilities. Combines visual building with custom code for creating complex automation workflows.',
-      image: '/projects/n8n.jpg',
-      tags: ['Automation', 'Workflow', 'AI', 'Integration'],
-      github: 'https://github.com/KabiththananParan/n8n',
-      demo: '#'
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadRepos() {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch(
+          `https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`,
+          {
+            signal: controller.signal,
+            headers: {
+              Accept: 'application/vnd.github+json',
+              'User-Agent': 'portfolio-site',
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`GitHub fetch failed: ${response.status}`);
+        }
+
+        const repos = await response.json();
+
+        const formattedProjects = repos
+          .filter((repo) => !repo.fork && !repo.archived)
+          .sort((a, b) => new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime())
+          .slice(0, MAX_PROJECTS)
+          .map((repo) => {
+            const tags = [repo.language, ...(repo.topics || []).slice(0, 3)].filter(Boolean);
+            const title = formatProjectTitle(repo.name);
+            return {
+              title,
+              description: repo.description || `Open-source project by ${GITHUB_USER}.`,
+              image: `https://opengraph.githubassets.com/1/${GITHUB_USER}/${repo.name}`,
+              tags,
+              github: repo.html_url,
+              demo: normalizeHomepage(repo.homepage),
+            };
+          });
+
+        setProjects(formattedProjects);
+      } catch (err) {
+        if (!controller.signal.aborted) {
+          setError('Unable to refresh projects from GitHub right now.');
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
     }
-  ];
 
-  const categories = ['All', 'JavaScript', 'React', 'Python', 'Java', 'Node.js'];
+    loadRepos();
+    return () => controller.abort();
+  }, []);
+
+  const categories = useMemo(() => {
+    const uniqueTags = Array.from(new Set(projects.flatMap((project) => project.tags || [])));
+    return ['All', ...uniqueTags.slice(0, 8)];
+  }, [projects]);
 
   const filteredProjects = filter === 'All' 
     ? projects 
     : projects.filter(project => project.tags.includes(filter));
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-200 relative overflow-x-hidden">
-      
-      {/* Background decoration */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-blue-500/10 blur-[100px] rounded-full" />
-        <div className="absolute bottom-0 right-0 w-[800px] h-[400px] bg-purple-500/5 blur-[100px] rounded-full" />
-        {/* Dot Grid Pattern */}
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]" style={{ backgroundSize: '30px 30px' }}></div> 
-      </div>
+    <div className="min-h-screen bg-zinc-950 text-zinc-200 relative overflow-x-hidden dotted-grid">
 
       <Navbar />
 
@@ -148,8 +177,7 @@ export default function ProjectsPage() {
           </h1>
           
           <p className="text-zinc-400 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-            I've worked on tons of little projects over the years, but these are some of the ones 
-            that I'm most proud of. Open source and built with passion.
+            Fresh from my GitHub profile, these are the latest projects I've been building and maintaining.
           </p>
 
           {/* Filter Buttons */}
@@ -173,6 +201,14 @@ export default function ProjectsPage() {
           </div>
         </motion.div>
 
+        {loading && (
+          <div className="text-center text-zinc-400 mb-12">Loading projects from GitHub...</div>
+        )}
+
+        {error && (
+          <div className="text-center text-red-400 mb-12">{error}</div>
+        )}
+
         {/* Projects Grid */}
         <motion.div 
           layout
@@ -195,20 +231,9 @@ export default function ProjectsPage() {
                 
                 {/* Image Container */}
                 <div className="relative h-48 w-full overflow-hidden bg-zinc-800/50 border-b border-zinc-800">
-                  {/* Placeholder/Real Image Logic */}
-                  {project.image ? (
-                     <div className="w-full h-full relative group-hover:scale-105 transition-transform duration-500 ease-out">
-                        {/* Note: Ensure you have images in public/projects/ or remove this block if only using placeholder */}
-                        {/* <Image src={project.image} alt={project.title} fill className="object-cover" /> */}
-                        
-                        {/* Fallback visualization for this demo since images might not exist locally for me */}
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-zinc-800 to-zinc-900">
-                           <svg className="w-12 h-12 text-zinc-700 group-hover:text-zinc-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                        </div>
-                     </div>
-                  ) : null}
+                  <div className="w-full h-full relative group-hover:scale-105 transition-transform duration-500 ease-out">
+                    <ProjectPreview image={project.image} title={project.title} />
+                  </div>
                   
                   {/* Overlay gradient on hover */}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
@@ -255,18 +280,20 @@ export default function ProjectsPage() {
                       Source
                     </a>
                     <div className="h-4 w-px bg-zinc-800"></div>
-                    <a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-xs font-medium text-zinc-300 hover:text-blue-400 transition-colors"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                      Live Demo
-                    </a>
+                    {project.demo && (
+                      <a
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-xs font-medium text-zinc-300 hover:text-blue-400 transition-colors"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        Live Demo
+                      </a>
+                    )}
                   </div>
                 </div>
               </motion.div>

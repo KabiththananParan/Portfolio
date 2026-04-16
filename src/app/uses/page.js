@@ -100,17 +100,8 @@ export default function UsesPage() {
   );
 
   return (
-    // Base: Deep black background (zinc-950) with white text.
-    <div className="min-h-screen bg-zinc-950 text-white relative overflow-hidden">
-      {/* Animated Dotted Grid Background - Monochromatic Style */}
-      <div 
-        className="fixed inset-0 opacity-10 pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(circle at 1px, rgba(255, 255, 255, 0.2) 1px, transparent 0)`,
-          backgroundSize: '60px 60px',
-          animation: 'float 30s ease-in-out infinite'
-        }}
-      />
+    // Base: Shared home-style background and page layout.
+    <div className="min-h-screen bg-zinc-950 text-white relative overflow-hidden dotted-grid">
 
       <Navbar />
 
