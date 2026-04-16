@@ -2,6 +2,15 @@
 const nextConfig = {
   /* config options here */
   reactCompiler: true,
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'ghchart.rshah.org' },
+      { protocol: 'https', hostname: 'github-readme-stats.vercel.app' },
+      { protocol: 'https', hostname: 'github-readme-streak-stats.herokuapp.com' },
+      { protocol: 'https', hostname: 'opengraph.githubassets.com' },
+      { protocol: 'https', hostname: 'avatars.githubusercontent.com' },
+    ],
+  },
 };
 
 export default nextConfig;

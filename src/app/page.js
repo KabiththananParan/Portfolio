@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Preloader from "@/components/Preloader";
+import TerminalProfile from "@/components/TerminalProfile";
 import { linkedInPosts } from "@/data/linkedin-posts";
 
 const fadeInUp = {
@@ -27,6 +28,7 @@ export default function Home() {
       title: "ML Intern at HABB", 
       date: "Aug 2024—Present",
       role: "Machine Learning",
+      logo: "/Work/Habb.jpg"
     },
   ];
 
@@ -84,6 +86,11 @@ export default function Home() {
               More about me
             </Link>
           </motion.div>
+        </section>
+
+        {/* Terminal / Cyberpunk Profile Section */}
+        <section className="min-h-screen py-16 sm:py-32 border-b border-[var(--border-color)] flex flex-col justify-center">
+           <TerminalProfile />
         </section>
 
         {/* Selected Works - Large padding for separation */}
@@ -160,8 +167,17 @@ export default function Home() {
                 key={index} 
                 className="flex flex-col pb-8 border-b border-[var(--border-color)] group"
               >
-                <p className="text-sm font-bold uppercase tracking-widest opacity-50 mb-2 group-hover:opacity-100 transition-opacity">{item.date}</p>
-                <h3 className="text-4xl lg:text-5xl font-black uppercase tracking-tight mb-4">{item.title}</h3>
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex flex-col">
+                    <p className="text-sm font-bold uppercase tracking-widest opacity-50 mb-2 group-hover:opacity-100 transition-opacity">{item.date}</p>
+                    <h3 className="text-4xl lg:text-5xl font-black uppercase tracking-tight">{item.title}</h3>
+                  </div>
+                  {item.logo && (
+                    <div className="relative w-16 h-16 sm:w-20 sm:h-20 shrink-0 border border-[var(--border-color)] grayscale group-hover:grayscale-0 transition-all duration-500 overflow-hidden">
+                      <Image src={item.logo} alt={item.title} fill className="object-cover" />
+                    </div>
+                  )}
+                </div>
                 <p className="text-xl font-medium opacity-80">{item.role}</p>
               </motion.div>
             ))}

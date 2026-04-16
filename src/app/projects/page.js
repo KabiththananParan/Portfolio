@@ -161,66 +161,89 @@ export default function ProjectsPage() {
         )}
 
         {/* Projects Grid */}
-        <section className="mt-24 grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-24 border-b border-[var(--border-color)] pb-24">
-          {filteredProjects.map((project) => (
+        <section className="mt-24 grid grid-cols-1 lg:grid-cols-2 gap-8 border-b border-[var(--border-color)] pb-24 font-mono">
+          {filteredProjects.map((project, idx) => (
             <div
               key={project.title}
-              className="group flex flex-col h-full border border-[var(--border-color)] hover:border-[var(--accent)] transition-colors duration-300"
+              className="group relative flex flex-col border border-[var(--border-color)] bg-black/40 hover:border-[var(--accent)] transition-all duration-300 overflow-hidden"
             >
-              {/* Image Container */}
-              <div className="relative aspect-video w-full overflow-hidden border-b border-[var(--border-color)]">
+              {/* Scanline sweep on hover */}
+              <div className="absolute inset-x-0 top-0 h-px bg-[var(--accent)] shadow-[0_0_8px_var(--accent)] opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none" />
+
+              {/* Top terminal bar */}
+              <div className="flex justify-between items-center px-4 py-2 border-b border-[var(--border-color)] group-hover:border-[var(--accent)] transition-colors bg-[#0a0a0a]">
+                <span className="text-[var(--accent)] text-[9px] uppercase tracking-widest opacity-70">// PROJECT_LOG [{String(idx + 1).padStart(2, '0')}]</span>
+                <span className="text-[9px] uppercase tracking-widest opacity-40 group-hover:opacity-80 transition-opacity">[READ_ONLY]</span>
+              </div>
+
+              {/* Image with corner brackets */}
+              <div className="relative aspect-video w-full overflow-hidden bg-[#0a0a0a] border-b border-[var(--border-color)] group-hover:border-[var(--accent)] transition-colors">
                 <ProjectPreview image={project.image} title={project.title} />
+                {/* Camera bracket corners */}
+                <div className="absolute top-3 left-3 w-5 h-5 border-t-2 border-l-2 border-[var(--accent)] opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                <div className="absolute top-3 right-3 w-5 h-5 border-t-2 border-r-2 border-[var(--accent)] opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                <div className="absolute bottom-3 left-3 w-5 h-5 border-b-2 border-l-2 border-[var(--accent)] opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                <div className="absolute bottom-3 right-3 w-5 h-5 border-b-2 border-r-2 border-[var(--accent)] opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                <div className="absolute top-2 left-2 text-[var(--accent)] text-[9px] font-bold opacity-0 group-hover:opacity-100 transition-opacity z-10">REC●</div>
               </div>
 
               {/* Content */}
-              <div className="p-8 sm:p-12 flex flex-col flex-grow">
-                <div className="flex justify-between items-start mb-6">
-                  <h3 className="text-3xl sm:text-5xl font-black uppercase tracking-tight group-hover:text-[var(--accent)] transition-colors">
+              <div className="p-6 flex flex-col flex-grow">
+
+                {/* Project title */}
+                <div className="border-l-2 border-[var(--accent)] pl-4 mb-6 group-hover:border-l-4 transition-all duration-300">
+                  <span className="text-[var(--accent)] text-[10px] uppercase tracking-widest mb-1 block opacity-70">// SYSTEM_NAME</span>
+                  <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tighter text-[var(--foreground)] leading-tight">
                     {project.title}
                   </h3>
                 </div>
 
-                <p className="text-lg opacity-70 leading-relaxed mb-8 flex-grow">
+                {/* Description */}
+                <p className="text-xs sm:text-sm opacity-60 group-hover:opacity-90 transition-opacity leading-relaxed mb-6 flex-grow border-l border-white/10 pl-4">
                   {project.description}
                 </p>
 
-                {/* Tags */}
-                <div className="flex flex-wrap gap-3 mb-12">
-                  {project.tags.slice(0, 3).map((tag) => (
+                {/* Tags as terminal chips */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {project.tags.slice(0, 4).map((tag) => (
                     <span
                       key={tag}
-                      className="text-xs uppercase tracking-widest font-bold text-[var(--accent)]"
+                      className="text-[9px] uppercase tracking-widest font-bold px-2 py-1 border border-[var(--accent)]/30 text-[var(--accent)] bg-[var(--accent)]/5 group-hover:bg-[var(--accent)]/10 transition-colors"
                     >
                       [{tag}]
                     </span>
                   ))}
-                  {project.tags.length > 3 && (
-                    <span className="text-xs uppercase tracking-widest font-bold opacity-50">+{project.tags.length - 3}</span>
+                  {project.tags.length > 4 && (
+                    <span className="text-[9px] uppercase tracking-widest font-bold px-2 py-1 border border-white/10 opacity-40">+{project.tags.length - 4}</span>
                   )}
                 </div>
 
                 {/* Actions */}
-                <div className="flex flex-wrap gap-8 mt-auto pt-8 border-t border-[var(--border-color)]">
+                <div className="flex flex-wrap gap-4 pt-4 border-t border-[var(--border-color)] group-hover:border-[var(--accent)]/30 transition-colors mt-auto">
                   <a
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="uppercase tracking-widest font-bold text-sm border-b-2 border-transparent hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
+                    className="text-[10px] uppercase tracking-widest font-bold text-[var(--foreground)] opacity-60 hover:opacity-100 hover:text-[var(--accent)] transition-all flex items-center gap-2"
                   >
-                    Source Code
+                    <span className="text-[var(--accent)]">[→]</span> Source_Code
                   </a>
                   {project.demo && (
                     <a
                       href={project.demo}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="uppercase tracking-widest font-bold text-sm border-b-2 border-transparent hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
+                      className="text-[10px] uppercase tracking-widest font-bold text-[var(--foreground)] opacity-60 hover:opacity-100 hover:text-[var(--accent)] transition-all flex items-center gap-2"
                     >
-                      Live Demo
+                      <span className="text-[var(--accent)]">[↗]</span> Live_Demo
                     </a>
                   )}
+                  <span className="ml-auto text-[9px] uppercase tracking-widest opacity-30">SYS: STABLE</span>
                 </div>
               </div>
+
+              {/* Bottom scanline accent */}
+              <div className="absolute inset-x-0 bottom-0 h-px bg-[var(--accent)] opacity-0 group-hover:opacity-50 transition-opacity pointer-events-none" />
             </div>
           ))}
         </section>

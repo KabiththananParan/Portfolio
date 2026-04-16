@@ -9,6 +9,12 @@
   --color-foreground: var(--foreground);
 }
 
+@media (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -62,4 +68,24 @@ input:focus, button:focus, a:focus {
   position: relative;
   border: 1px solid var(--border-color);
   background: transparent;
+}
+
+/* Certifications Marquee Animation */
+.cert-marquee-track {
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+.cert-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.cert-marquee-track.no-marquee {
+  animation: none;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  /* Gap is gap-6 (1.5rem). Translate by 50% + half the gap to perfectly jump back */
+  100% { transform: translateX(calc(-50% - 0.75rem)); }
 }
